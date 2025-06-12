@@ -1,25 +1,22 @@
-import logo from './logo.svg';
 import './App.css';
-
+import { useEffect, useState } from 'react';
+import {getPoids} from './services/appelerws'
 function App() {
+  const [data, setData] = useState(null);
+
+  useEffect(() => {
+    getPoids()
+        .then(setData)
+        .catch(err => console.error("Erreurrrrr :", err));
+  },   []);
+    console.log("dataaaa:"+  data)
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+      <div>
+        <h1>Données WS {data?.body}</h1>
+        {data ? <pre>{JSON.stringify(data, null, 2)}</pre> : <p>Chargement…</p>}
+      </div>
   );
+
 }
 
 export default App;
